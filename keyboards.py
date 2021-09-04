@@ -19,7 +19,7 @@ class Keyboard:
         self.keyboard = None
 
     def add_rows(self, rows_amount=1):
-        for i in range(rows_amount):
+        for i in range(min(max(abs(rows_amount), 1), 10)):
             self.buttons.append([])
 
     def add_button(self, text, color, row=1):
@@ -45,7 +45,7 @@ class Keyboard:
             for button in row:
                 keyboard.add_button(
                     label=button[0],
-                    color=colors[button[1]]
+                    color=colors[button[1].upper()]
                 )
 
             if self.buttons[-1] != row:
@@ -70,6 +70,19 @@ def get_by_id(keyboard_id):
 
     return result
 
+
+# Создание клавиатур
+_ = Keyboard("EXAMPLE")
+_.add_rows(3)
+_.add_button("Да", "GREEN")
+_.add_button("Нет", "RED", 1)
+_.add_button("Белый", "WHITE", 2)
+_.add_button("Синий", "BLUE", 2)
+_.add_button("Зелёный", "GREEN", 2)
+_.add_button("Красный", "RED", 2)
+_.add_button("3й ряд", "WHITE", 3)
+_.add_button("2я кнопка в 3м ряду", "WHITE", 3)
+_.bake()
 
 _ = Keyboard("GP2021_prompt")
 _.add_rows()

@@ -10,7 +10,7 @@ __pycache__/
 .Python
 .idea/
 files/vk_settings.py
-core.py
+run.py
 build/
 develop-eggs/
 dist/
