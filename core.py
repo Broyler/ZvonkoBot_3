@@ -3,6 +3,7 @@ from files import vk_settings
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from random import randint
 from keyboards import get_by_id, get_msg
+from carousels import cget_by_id
 from json import dumps, loads
 
 
@@ -12,18 +13,19 @@ class ZvonkoBot:
         self.vk_long_poll = VkBotLongPoll(self.vk, abs(vk_settings.group_id))
         self.vk_api = self.vk.get_api()
 
-    def msg_send(self, uid, msg, keyboard=None):
+    def msg_send(self, uid, msg, keyboard=None, carousel=None):
         try:
             message_id = self.vk_api.messages.send(
                 peer_id=uid,
                 message=msg,
                 random_id=randint(-10000000000, 10000000000),
-                keyboard=None if not keyboard or not get_by_id(keyboard) else get_by_id(keyboard)
+                keyboard=None if not keyboard or not get_by_id(keyboard) else get_by_id(keyboard),
+                template=None if not carousel or not cget_by_id(carousel) else dumps(cget_by_id(carousel))
             )
             return message_id
 
-        except vk_api.exceptions.ApiError:
-            print("[!] Сообщение не дошло, id: {}. Ошибка ApiError".format(str(uid)))
+        except vk_api.exceptions.ApiError as error:
+            print("[!] Сообщение не дошло, id: {}. Ошибка ApiError {}".format(str(uid), error))
             return 1
 
     def long_poll(self):
